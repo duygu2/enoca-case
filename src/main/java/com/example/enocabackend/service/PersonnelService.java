@@ -3,6 +3,7 @@ package com.example.enocabackend.service;
 import com.example.enocabackend.dto.Personnel.PersonnelDto;
 import com.example.enocabackend.dto.Personnel.PersonnelDtoConverter;
 import com.example.enocabackend.dto.Personnel.UpdatePersonnelRequest;
+import com.example.enocabackend.exception.PersonnelNotFoundException;
 import com.example.enocabackend.model.Personnel;
 import com.example.enocabackend.repository.CompanyRepository;
 import com.example.enocabackend.repository.PersonnelRepository;
@@ -64,7 +65,7 @@ public class PersonnelService  {
 
     public PersonnelDto getById(Long id){
         Optional<Personnel> personnelOptional= personnelRepository.findById(id);
-        return personnelOptional.map(personnelDtoConverter::convert).orElse(new PersonnelDto());
+        return personnelOptional.map(personnelDtoConverter::convert).orElseThrow(()-> new PersonnelNotFoundException("Personnel by id" + id + " was not found"));
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.enocabackend.service;
 import com.example.enocabackend.dto.Company.CompanyDto;
 import com.example.enocabackend.dto.Company.CompanyDtoConverter;
 import com.example.enocabackend.dto.Company.UpdateCompanyRequest;
+import com.example.enocabackend.exception.CompanyNotFoundException;
 import com.example.enocabackend.model.Company;
 import com.example.enocabackend.repository.CompanyRepository;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,7 @@ public class CompanyService {
 
     public CompanyDto getById(Long id){
         Optional<Company> companyOptional= companyRepository.findById(id);
-        return companyOptional.map(companyDtoConverter::convert).orElse(new CompanyDto());
+        return companyOptional.map(companyDtoConverter::convert).orElseThrow(()->new CompanyNotFoundException("Company by id" + id + " was not found"));
     }
 
     public void delete(Long id){
